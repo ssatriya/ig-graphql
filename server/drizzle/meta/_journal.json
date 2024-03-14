@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709653290983,
+      "tag": "0000_natural_husk",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1709653359388,
+      "tag": "0001_careful_luminals",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709988614908,
+      "tag": "0002_sour_blockbuster",
+      "breakpoints": true
+    }
+  ]
+}
