@@ -7,7 +7,7 @@ import {
 
 type LikeStatsProps = {
   data?: GetLikeByPostIdQuery;
-  post: NonNullable<GetPostsQuery["posts"]["posts"]>[number];
+  post?: NonNullable<GetPostsQuery["posts"]["edges"]>[number];
 };
 
 const LikeStats = ({ data, post }: LikeStatsProps) => {

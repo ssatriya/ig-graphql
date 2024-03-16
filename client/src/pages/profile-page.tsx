@@ -1,59 +1,52 @@
-import { useCurrentSession } from "@/components/session-provider";
+import { useEffect, useMemo } from "react";
+import { useOutletContext } from "react-router-dom";
+import { client, useCurrentSession } from "@/components/session-provider";
+
 import {
   GetPostsByUserIdDocument,
-  GetUserByUsernameDocument,
+  GetUserByUsernameQuery,
 } from "@/lib/graphql/__generated__/graphql";
-import { useQuery } from "@apollo/client";
-import { useParams } from "react-router-dom";
-import PersonalProfilePosts from "./_components/profile/persona-profile/personal-profile-posts";
-import GeneralProfilePosts from "./_components/profile/general-profile/general-profile-posts";
+import { useQuery } from "@tanstack/react-query";
+import useContentLoading from "@/hooks/use-content-loading";
 import PostImageSkeleton from "./_components/profile/post-image-skeleton";
-import { useEffect, useMemo } from "react";
-import useUserPosts from "@/hooks/use-user-posts";
+import GeneralProfilePosts from "./_components/profile/general-profile/general-profile-posts";
+import PersonalProfilePosts from "./_components/profile/persona-profile/personal-profile-posts";
 
 export default function ProfilePage() {
-  const { username } = useParams();
   const {
     session: { user },
   } = useCurrentSession();
-  const { setUserPosts, userPosts } = useUserPosts((state) => state);
+  const outletContext: GetUserByUsernameQuery = useOutletContext();
+  const { setIsLoading } = useContentLoading((state) => state);
 
-  const { data: userByUsername } = useQuery(GetUserByUsernameDocument, {
-    variables: {
-      username: username ? username : "",
+  const { data, isLoading: userPostsLoading } = useQuery({
+    queryKey: ["postsData", outletContext?.userByUsername?.id],
+    queryFn: async () => {
+      return await client.request(GetPostsByUserIdDocument, {
+        postsByUserId: outletContext?.userByUsername?.id ?? "",
+      });
     },
   });
 
-  const { data, loading: userPostsLoading } = useQuery(
-    GetPostsByUserIdDocument,
-    {
-      variables: {
-        postsByUserId: userByUsername?.userByUsername?.id ?? "",
-      },
-    }
-  );
-
   useEffect(() => {
-    if (data && !userPosts) {
-      setUserPosts(data);
+    if (!userPostsLoading) {
+      setIsLoading(false);
     }
-  }, [data, setUserPosts, userPosts]);
+  }, [userPostsLoading, setIsLoading]);
 
   const myProfile = useMemo(
-    () => userByUsername?.userByUsername?.id === user?.id,
-    [userByUsername, user]
+    () => outletContext?.userByUsername?.id === user?.id,
+    [outletContext, user]
   );
 
-  if (userPostsLoading)
+  if (!data)
     return (
-      <PostImageSkeleton
-        postCount={userByUsername?.userByUsername?.postCount}
-      />
+      <PostImageSkeleton postCount={outletContext?.userByUsername?.postCount} />
     );
 
   return myProfile ? (
-    <PersonalProfilePosts userPosts={userPosts} />
+    <PersonalProfilePosts userPosts={data} />
   ) : (
-    <GeneralProfilePosts userPosts={userPosts} />
+    <GeneralProfilePosts userPosts={data} />
   );
 }

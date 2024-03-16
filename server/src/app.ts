@@ -68,6 +68,9 @@ app.use(express.json());
 app.get("/health-check", (req: Request, res: Response) => {
   return res.json({ status: "OK" });
 });
+app.get("/", (req: Request, res: Response) => {
+  return res.json({ hello: "World" });
+});
 
 app.use(
   "/graphql",
@@ -103,7 +106,7 @@ app.use(
 app.use("/api", userRouter);
 
 await new Promise<void>((resolve) => {
-  httpServer.listen({ port: process.env.SERVER_PORT }, resolve);
+  httpServer.listen({ port: process.env.SERVER_PORT || 4000 }, resolve);
 });
 
 console.log(`🚀 Server ready at http://localhost:4000/graphql`);

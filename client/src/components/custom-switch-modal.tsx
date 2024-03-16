@@ -1,3 +1,4 @@
+import useContentLoading from "@/hooks/use-content-loading";
 import { useEffect, useState } from "react";
 import { Routes, useLocation } from "react-router-dom";
 import TopBarProgress from "react-topbar-progress-indicator";
@@ -14,6 +15,7 @@ const CustomSwitchModal = ({ children }: { children: React.ReactNode }) => {
   const [progress, setProgress] = useState(false);
   const [prevLoc, setPrevLoc] = useState("");
   const location = useLocation();
+  const { isLoading } = useContentLoading((state) => state);
 
   const background = location.state && location.state.background;
 
@@ -26,8 +28,10 @@ const CustomSwitchModal = ({ children }: { children: React.ReactNode }) => {
   }, [location]);
 
   useEffect(() => {
-    setProgress(false);
-  }, [prevLoc]);
+    if (!isLoading) {
+      setProgress(false);
+    }
+  }, [prevLoc, isLoading]);
 
   return (
     <>

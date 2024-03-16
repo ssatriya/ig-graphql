@@ -90,6 +90,9 @@ export const GET_USER_BY_USERNAME = gql(/* GraphQL */ `
       name
       postCount
       username
+      followers {
+        followingsId
+      }
     }
   }
 `);
@@ -113,6 +116,15 @@ export const GET_POSTS_BY_USER_ID = gql(/* GraphQL */ `
       createdAt
       likeCount
       commentCount
+    }
+  }
+`);
+
+export const FOLLOW_USER = gql(/* GraphQL */ `
+  mutation FollowUser($userId: String!) {
+    follows(userId: $userId) {
+      status
+      message
     }
   }
 `);

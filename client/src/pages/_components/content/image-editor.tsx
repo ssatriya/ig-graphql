@@ -39,8 +39,8 @@ import { Separator } from "@/components/ui/separator";
 import { ZoomSlider } from "@/components/ui/zoom-slider";
 import { getZoomFactor } from "advanced-cropper/extensions/absolute-zoom";
 import { AdjustableCropperBackground } from "./cropper/adjustable-cropper-background";
-import { useAspectRatio } from "@/hooks/use-aspect-ratio";
 import { Swiper as SwiperType } from "swiper/types";
+import { useAspectRatio } from "@/hooks/use-aspect-ratio";
 
 type ZoomLevelsState = Record<string, number>;
 
@@ -50,7 +50,6 @@ type ImageEditorProps = {
   inputRef: RefObject<HTMLInputElement>;
   onDelete: (imageId: string) => void;
   postStep: "image" | "filter" | "post";
-  setCaption: React.Dispatch<React.SetStateAction<string | undefined>>;
   editor: Editor | null;
   onSelect: (data: string) => void;
 };
@@ -61,7 +60,6 @@ const ImageEditor = ({
   inputRef,
   onDelete,
   postStep,
-  setCaption,
   editor,
   onSelect,
 }: ImageEditorProps) => {
@@ -401,11 +399,7 @@ const ImageEditor = ({
       {/* {postStep === "filter" && <FilterTabs />} */}
       {postStep === "filter" && <p>Filter here</p>}
       {postStep === "post" && (
-        <PostEditor
-          editor={editor}
-          onSelect={onSelect}
-          setCaption={setCaption}
-        />
+        <PostEditor editor={editor} onSelect={onSelect} />
       )}
     </div>
   );

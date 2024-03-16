@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { XIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const FollowingModal = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const FollowingModal = () => {
   return (
     <Dialog defaultOpen>
       <DialogContent
-        onInteractOutside={onDismiss}
+        onInteractOutside={() => onDismiss()}
         className="w-[400px] border-none dark:bg-igSeparator bg-background p-0 sm:rounded-xl gap-0"
       >
         <div className="flex w-full h-[43px] items-center justify-between border-b-[1px] dark:border-igElevatedSeparatorV2 border-igElevatedSeparator">

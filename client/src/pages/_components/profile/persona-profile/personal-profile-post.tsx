@@ -1,6 +1,10 @@
-import { Icons } from "@/components/icons";
-import { GetPostsByUserIdQuery } from "@/lib/graphql/__generated__/graphql";
+import { useState } from "react";
 import { Copy } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { Icons } from "@/components/icons";
+import { Skeleton } from "@/components/ui/skeleton";
+import { GetPostsByUserIdQuery } from "@/lib/graphql/__generated__/graphql";
 
 type PersonalProfilePostProps = {
   postImages: string[];
@@ -11,6 +15,8 @@ const PersonalProfilePost = ({
   postImages,
   post,
 }: PersonalProfilePostProps) => {
+  const [imageLoading, setImageLoading] = useState(true);
+
   return (
     <div className="relative h-[309px] w-[309px] cursor-pointer flex items-center justify-center group">
       {postImages.length > 1 && (
@@ -21,8 +27,10 @@ const PersonalProfilePost = ({
         src={postImages[0]}
         alt="post image"
         style={{ objectFit: "cover" }}
-        className="h-[309px] w-[309px]"
+        className={cn("h-[309px] w-[309px]", imageLoading ? "hidden" : "block")}
+        onLoad={() => setImageLoading(false)}
       />
+      {imageLoading && <Skeleton className="h-[309px] w-[309px]" />}
       <div className="absolute top-1/2  gap-9 hidden group-hover:flex z-30">
         <div className="flex items-start gap-2">
           <Icons.loveActive className="text-white h-5 w-5" fill="white" />

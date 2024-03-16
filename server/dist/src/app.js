@@ -42,9 +42,13 @@ app.use(express.json());
 app.get("/health-check", (req, res) => {
     return res.json({ status: "OK" });
 });
+app.get("/", (req, res) => {
+    return res.json({ hello: "World" });
+});
 app.use("/graphql", cors(), express.json(), expressMiddleware(server, {
     context: async ({ req, res }) => {
-        const cookies = parseCookies(req.headers.cookie ?? "");
+        var _a;
+        const cookies = parseCookies((_a = req.headers.cookie) !== null && _a !== void 0 ? _a : "");
         const cookieToken = cookies.get("auth_session");
         const authorizationHeader = req.headers.authorization
             ? req.headers.authorization
@@ -63,6 +67,6 @@ app.use("/graphql", cors(), express.json(), expressMiddleware(server, {
 }));
 app.use("/api", userRouter);
 await new Promise((resolve) => {
-    httpServer.listen({ port: process.env.SERVER_PORT }, resolve);
+    httpServer.listen({ port: process.env.SERVER_PORT || 4000 }, resolve);
 });
 console.log(`🚀 Server ready at http://localhost:4000/graphql`);

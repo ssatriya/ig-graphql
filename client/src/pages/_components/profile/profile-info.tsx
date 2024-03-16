@@ -1,10 +1,16 @@
-import { Icons } from "@/components/icons";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { GetUserByUsernameQuery } from "@/lib/graphql/__generated__/graphql";
+import { Link, useLocation } from "react-router-dom";
+
 import { cn } from "@/lib/utils";
 import { User } from "@/types/auth";
-import { Link, useLocation } from "react-router-dom";
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
+import {
+  FollowUserDocument,
+  GetUserByUsernameQuery,
+} from "@/lib/graphql/__generated__/graphql";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { client } from "@/components/session-provider";
 
 type ProfileInfoProps = {
   userByUsername?: GetUserByUsernameQuery;
@@ -12,12 +18,28 @@ type ProfileInfoProps = {
 };
 
 const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
+  const queryClient = useQueryClient();
   const location = useLocation();
   const myProfile = loggedInUser
     ? loggedInUser.id === userByUsername?.userByUsername?.id
     : false;
-  const isPending = false;
-  const isFollowing = false;
+  const isFollowing = userByUsername?.userByUsername?.followers?.find(
+    (user) => user?.followingsId === loggedInUser?.id
+  );
+
+  const { mutate: followHandler, isPending } = useMutation({
+    mutationKey: ["followUser", userByUsername?.userByUsername?.id],
+    mutationFn: async () => {
+      return await client.request(FollowUserDocument, {
+        userId: userByUsername?.userByUsername?.id
+          ? userByUsername?.userByUsername?.id
+          : "",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userData"] });
+    },
+  });
 
   return (
     <div className="flex">
@@ -56,7 +78,7 @@ const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
             )}
             {!myProfile && (
               <Button
-                // onClick={followHandler}
+                onClick={() => followHandler()}
                 variant="nav"
                 className={cn(
                   "px-4 h-8 text-sm rounded-lg",

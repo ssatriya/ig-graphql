@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 // import CommentEditor from "./post-modal/comment-editor";
 import { Icons } from "@/components/icons";
 import useMeasure from "react-use-measure";
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -73,9 +72,7 @@ export default function PostModal() {
   const navigate = useNavigate();
   const [usernameRef, usernameBounds] = useMeasure();
   const { isOpen, onClose } = useTogglePost((state) => state);
-  const [caption, setCaption] = useState<string>();
-  const [openLikedModal, setOpenLikedModal] = useState(false);
-  const queryClient = useQueryClient();
+  // const [openLikedModal, setOpenLikedModal] = useState(false);
   // const {
   //   session: { user },
   // } = useCurrentSession();

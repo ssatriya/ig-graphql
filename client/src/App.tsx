@@ -1,37 +1,36 @@
-import { Route, Outlet, useLocation } from "react-router-dom";
-
-import HomePage from "./pages/home-page";
-import LoginPage from "./pages/login-page";
-import ProtectedLayout from "./pages/protected-layout";
-import PostModal from "./pages/_components/content/post-modal/post-modal";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SinglePost from "./pages/single-post";
-import CustomSwitchModal from "./components/custom-switch-modal";
-import SessionProvider from "./components/session-provider";
-import { useEffect, useState } from "react";
-import { UserSession } from "./types/auth";
-import axios from "axios";
-import LoadingScreen from "./components/loading-screen";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
 } from "@apollo/client";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { setContext } from "@apollo/client/link/context";
+import { Route, Outlet, useLocation } from "react-router-dom";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 // import { useTogglePost } from "./hooks/use-toggle-post";
+import HomePage from "./pages/home-page";
+import LoginPage from "./pages/login-page";
+import { UserSession } from "./types/auth";
+import SavedPage from "./pages/saved-page";
+import SinglePost from "./pages/single-post";
+import TaggedPage from "./pages/tagged-page";
 import ProfilePage from "./pages/profile-page";
 import ProfileLayout from "./pages/profile-layout";
 import CustomSwitch from "./components/custom-switch";
-import SavedPage from "./pages/saved-page";
-import TaggedPage from "./pages/tagged-page";
+import ProtectedLayout from "./pages/protected-layout";
+import LoadingScreen from "./components/loading-screen";
+import SessionProvider from "./components/session-provider";
+import CustomSwitchModal from "./components/custom-switch-modal";
 import FollowingModal from "./pages/_components/profile/following-modal";
+import PostModal from "./pages/_components/content/post-modal/post-modal";
 
 const queryClient = new QueryClient();
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql",
+  uri: `${import.meta.env.VITE_DEV_SERVER}/graphql`,
 });
 
 function App() {
@@ -47,9 +46,11 @@ function App() {
 
   useEffect(() => {
     const getSession = async () => {
-      const { data } = await axios.get(
-        "http://localhost:4000/api/user/session",
+      axios.defaults.withCredentials = true;
+      const { data } = await axios(
+        `${import.meta.env.VITE_DEV_SERVER}/api/user/session`,
         {
+          method: "GET",
           withCredentials: true,
         }
       );
@@ -77,7 +78,7 @@ function App() {
         Query: {
           fields: {
             like: {
-              merge(existing, incoming) {
+              merge(_, incoming) {
                 return incoming.slice().reverse();
               },
             },

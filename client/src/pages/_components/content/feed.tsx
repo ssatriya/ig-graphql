@@ -10,8 +10,8 @@ import {
   GetPostsDocument,
 } from "@/lib/graphql/__generated__/graphql";
 import { client } from "@/components/session-provider";
+import useContentLoading from "@/hooks/use-content-loading";
 import { INFINITE_SCROLLING_PAGINATION_RESULTS } from "@/lib/config";
-import { useQuery } from "@apollo/client";
 
 const Feed = () => {
   const lastPostRef = useRef();
@@ -19,6 +19,7 @@ const Feed = () => {
     root: lastPostRef.current,
     threshold: 0.4,
   });
+  const { setIsLoading } = useContentLoading((state) => state);
 
   const {
     data,
@@ -45,6 +46,12 @@ const Feed = () => {
     },
     initialPageParam: 1,
   });
+
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoading(false);
+    }
+  }, [isLoading]);
 
   // Apollo
   // const { data: apolloData, fetchMore } = useQuery(GetPostsDocument, {

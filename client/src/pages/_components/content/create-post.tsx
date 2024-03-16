@@ -54,7 +54,6 @@ const CreatePost = () => {
   const [postStep, setPostStep] = useState<"image" | "filter" | "post">(
     "image"
   );
-  const [caption, setCaption] = useState<string | undefined>("");
   const [posting, setPosting] = useState<
     "idle" | "posting" | "success" | "error"
   >("idle");
@@ -210,7 +209,6 @@ const CreatePost = () => {
     onClientUploadComplete: (file) => {
       const fileUrl: string[] = [];
       file.map((f) => fileUrl.push(f.url));
-      console.log(file);
 
       if (fileUrl.length > 0) {
         mutate({
@@ -356,7 +354,6 @@ const CreatePost = () => {
               postStep={postStep}
               editor={editor}
               onSelect={onSelect}
-              setCaption={setCaption}
             />
           )}
         {files.length < 1 &&

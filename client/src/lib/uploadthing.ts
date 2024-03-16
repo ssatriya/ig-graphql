@@ -1,5 +1,5 @@
 import { generateReactHelpers } from "@uploadthing/react";
 
 export const { uploadFiles, useUploadThing } = generateReactHelpers({
-  url: "http://localhost:4000/api/uploadthing",
+  url: `${import.meta.env.VITE_DEV_SERVER}/api/uploadthing`,
 });

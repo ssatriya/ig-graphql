@@ -321,5 +321,33 @@ export const resolvers: Resolvers = {
 
       return { message: "Comment created", status: 201 };
     },
+    follows: async (_, { userId }, { session }) => {
+      const isFollowed = await db.query.followers.findFirst({
+        where: (followers, { eq, and }) =>
+          and(
+            eq(followers.followersId, userId),
+            eq(followers.followingsId, session.user.id)
+          ),
+      });
+
+      if (!isFollowed) {
+        await db
+          .insert(followers)
+          .values({ followersId: userId, followingsId: session.user.id });
+
+        return { message: "User followed", status: 201 };
+      }
+
+      await db
+        .delete(followers)
+        .where(
+          and(
+            eq(followers.followersId, userId),
+            eq(followers.followingsId, session.user.id)
+          )
+        );
+
+      return { message: "User un-followed", status: 201 };
+    },
   },
 };

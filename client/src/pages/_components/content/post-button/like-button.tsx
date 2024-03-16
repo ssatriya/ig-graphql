@@ -3,14 +3,16 @@ import { useMutation } from "@apollo/client";
 
 import { Icons } from "@/components/icons";
 import {
-  GetLikeQuery,
+  GetLikeByPostIdQuery,
   GetPostsQuery,
 } from "@/lib/graphql/__generated__/graphql";
 import { Button } from "@/components/ui/button";
 import { CREATE_LIKE, GET_LIKES } from "@/lib/graphql/queries";
 
 type LikeButtonProps = {
-  postLike: NonNullable<GetPostsQuery["posts"][0]>["like"];
+  postLike: NonNullable<
+    NonNullable<GetPostsQuery["posts"]["edges"]>[number]
+  >["like"];
   postId?: string;
   loggedInUserId?: string;
   loggedInUserUsername?: string;
@@ -36,7 +38,7 @@ const LikeButton = ({
       const createLike = data?.createLike;
 
       if (createLike) {
-        const data: GetLikeQuery | null = cache.readQuery({
+        const data: GetLikeByPostIdQuery | null = cache.readQuery({
           query: GET_LIKES,
           variables: { postId: postId! },
         });

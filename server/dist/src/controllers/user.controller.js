@@ -30,12 +30,13 @@ export async function googleLoginController(req, res) {
     return res.redirect(url.toString());
 }
 export async function googleLoginCallbackController(req, res) {
+    var _a, _b, _c, _d, _e, _f, _g;
     const clientAfterLoginRedirect = `${process.env.CLIENT_PUBLIC_URL}${process.env.CLIENT_AFTER_LOGIN_URL}`;
-    const code = req.query.code?.toString() ?? null;
-    const state = req.query.state?.toString() ?? null;
-    const cookies = parseCookies(req.headers.cookie ?? "");
-    const codeVerifier = cookies.get("code_verifier") ?? null;
-    const storedState = cookies.get("google_oauth_state") ?? null;
+    const code = (_b = (_a = req.query.code) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : null;
+    const state = (_d = (_c = req.query.state) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : null;
+    const cookies = parseCookies((_e = req.headers.cookie) !== null && _e !== void 0 ? _e : "");
+    const codeVerifier = (_f = cookies.get("code_verifier")) !== null && _f !== void 0 ? _f : null;
+    const storedState = (_g = cookies.get("google_oauth_state")) !== null && _g !== void 0 ? _g : null;
     if (!code ||
         !state ||
         !storedState ||
@@ -101,12 +102,13 @@ export async function googleLoginCallbackController(req, res) {
     }
 }
 export async function userSessionController(req, res) {
-    const cookies = parseCookies(req.headers.cookie ?? "");
+    var _a;
+    const cookies = parseCookies((_a = req.headers.cookie) !== null && _a !== void 0 ? _a : "");
     const cookieToken = cookies.get("auth_session");
     const authorizationHeader = req.headers.authorization
         ? req.headers.authorization
         : `Bearer ${cookieToken}`;
-    const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+    const sessionId = lucia.readBearerToken(authorizationHeader !== null && authorizationHeader !== void 0 ? authorizationHeader : "");
     if (!sessionId) {
         return new Response(null, {
             status: 401,
@@ -118,7 +120,7 @@ export async function userSessionController(req, res) {
 export async function logoutController(req, res) {
     try {
         const authorizationHeader = req.headers.authorization;
-        const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+        const sessionId = lucia.readBearerToken(authorizationHeader !== null && authorizationHeader !== void 0 ? authorizationHeader : "");
         if (!sessionId) {
             return new Response(null, {
                 status: 401,

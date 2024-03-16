@@ -38,9 +38,12 @@ const SessionProvider = ({ children, session }: SessionProviderProps) => {
   }, [session]);
 
   const refreshSessionData = async () => {
-    const { data } = await axios.get("http://localhost:4000/api/user/session", {
-      withCredentials: true,
-    });
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_DEV_SERVER}/api/user/session`,
+      {
+        withCredentials: true,
+      }
+    );
     setAuthSession(data);
   };
 

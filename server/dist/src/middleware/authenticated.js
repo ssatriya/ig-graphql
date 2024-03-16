@@ -1,7 +1,8 @@
 import { lucia } from "../lib/auth/index.js";
 import { parseCookies } from "oslo/cookie";
 export async function authenticated(req, res, next) {
-    const cookies = parseCookies(req.headers.cookie ?? "");
+    var _a;
+    const cookies = parseCookies((_a = req.headers.cookie) !== null && _a !== void 0 ? _a : "");
     const cookieToken = cookies.get("auth_session");
     const authorizationHeader = req.headers.authorization
         ? req.headers.authorization

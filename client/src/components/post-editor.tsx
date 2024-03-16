@@ -1,6 +1,5 @@
 "use client";
 
-import { SetStateAction } from "react";
 import { EditorContent, Editor } from "@tiptap/react";
 
 import { Icons } from "@/components/icons";
@@ -16,12 +15,11 @@ import { useCurrentSession } from "./session-provider";
 import { LIMIT } from "@/lib/config";
 
 type PostEditorProps = {
-  setCaption: React.Dispatch<SetStateAction<string | undefined>>;
   editor: Editor | null;
   onSelect: (data: string) => void;
 };
 
-const PostEditor = ({ setCaption, editor, onSelect }: PostEditorProps) => {
+const PostEditor = ({ editor, onSelect }: PostEditorProps) => {
   const {
     session: { user },
   } = useCurrentSession();

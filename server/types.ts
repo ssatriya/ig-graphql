@@ -73,7 +73,7 @@ export type MutationCreateCommentArgs = {
 
 
 export type MutationCreateLikeArgs = {
-  postId: Scalars['ID']['input'];
+  postId: Scalars['String']['input'];
 };
 
 
@@ -83,7 +83,7 @@ export type MutationCreatePostArgs = {
 
 
 export type MutationFollowsArgs = {
-  userId: Scalars['ID']['input'];
+  userId: Scalars['String']['input'];
 };
 
 export type PageInfo = {

@@ -3,7 +3,9 @@ import { Button } from "../ui/button";
 const SocialLogin = () => {
   const onClick = (providers: "google" | "github") => {
     if (providers === "google") {
-      window.location.replace("http://localhost:4000/api/login/google");
+      window.location.replace(
+        `${import.meta.env.VITE_DEV_SERVER}/api/login/google`
+      );
     } else if (providers === "github") {
       window.location.replace("/api/login/github");
     }

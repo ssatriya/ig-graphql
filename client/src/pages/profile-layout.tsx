@@ -1,13 +1,12 @@
-import ProfileInfo from "./_components/profile/profile-info";
+import { useQuery } from "@tanstack/react-query";
 import { Outlet, useParams } from "react-router-dom";
-import ProfileHighlight from "./_components/profile/profile-highlight";
-import { GetUserByUsernameDocument } from "@/lib/graphql/__generated__/graphql";
+
 import TabsWrapper from "./_components/profile/tabs-wrapper";
+import ProfileInfo from "./_components/profile/profile-info";
 import ProfileFooter from "./_components/profile/profile-footer";
-import { useCurrentSession } from "@/components/session-provider";
-import { useQuery } from "@apollo/client";
-import { useEffect } from "react";
-import useUserProfile from "@/hooks/use-user-profile";
+import ProfileHighlight from "./_components/profile/profile-highlight";
+import { client, useCurrentSession } from "@/components/session-provider";
+import { GetUserByUsernameDocument } from "@/lib/graphql/__generated__/graphql";
 
 const ProfileLayout = () => {
   const { username } = useParams();
@@ -15,23 +14,15 @@ const ProfileLayout = () => {
   const {
     session: { user },
   } = useCurrentSession();
-  const { setUserData, userData } = useUserProfile((state) => state);
 
-  const { data } = useQuery(GetUserByUsernameDocument, {
-    variables: {
-      username: username ? username : "",
+  const { data: userData } = useQuery({
+    queryKey: ["userData", username],
+    queryFn: async () => {
+      return await client.request(GetUserByUsernameDocument, {
+        username: username ? username : "",
+      });
     },
   });
-
-  useEffect(() => {
-    setUserData(undefined);
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      setUserData(data);
-    }
-  }, [data, setUserData]);
 
   if (userData)
     return (
@@ -39,7 +30,7 @@ const ProfileLayout = () => {
         <ProfileInfo loggedInUser={user} userByUsername={userData} />
         <ProfileHighlight loggedInUser={user} userByUsername={userData} />
         <TabsWrapper userByUsername={userData}>
-          <Outlet />
+          <Outlet context={userData} />
         </TabsWrapper>
         <div className="relative">
           <ProfileFooter />

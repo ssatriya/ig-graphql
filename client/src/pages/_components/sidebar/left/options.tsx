@@ -33,15 +33,18 @@ const Options = () => {
       return null;
     }
 
-    const response = await fetch("http://localhost:4000/api/user/logout", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${session.id}`,
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_DEV_SERVER}/api/user/logout`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${session.id}`,
+        },
+      }
+    );
 
     if (response.ok) {
-      window.location.href = "http://localhost:5173/";
+      window.location.href = import.meta.env.VITE_URL;
     }
   };
 
