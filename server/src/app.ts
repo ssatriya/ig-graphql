@@ -114,24 +114,24 @@ app.use(
 
 app.use("/api", userRouter);
 
-// io.use(async (socket, next) => {
-//   const authorizationHeader = socket.handshake.headers["authorization"];
+io.use(async (socket, next) => {
+  const authorizationHeader = socket.handshake.headers["authorization"];
 
-//   if (authorizationHeader) {
-//     const sessionId = lucia.readBearerToken(authorizationHeader) as string;
-//     const session = await lucia.validateSession(sessionId);
+  if (authorizationHeader) {
+    const sessionId = lucia.readBearerToken(authorizationHeader) as string;
+    const session = await lucia.validateSession(sessionId);
 
-//     if (session.user) {
-//       next();
-//     }
-//   }
-// });
+    if (session.user) {
+      next();
+    }
+  }
+});
 
-// io.on("connection", (socket) => {
-//   socket.on("room", (room) => {
-//     console.log(room);
-//   });
-// });
+io.on("connection", (socket) => {
+  socket.on("room", (room) => {
+    console.log(room);
+  });
+});
 
 await new Promise<void>((resolve) => {
   httpServer.listen({ port: process.env.SERVER_PORT || 4000 }, resolve);
