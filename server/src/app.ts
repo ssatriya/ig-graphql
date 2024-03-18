@@ -54,7 +54,10 @@ await server.start();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_PUBLIC_URL,
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_PUBLIC_URL
+        : "http://localhost:5173",
     methods: "GET, POST, PATCH, DELETE, PUT",
     allowedHeaders:
       "Content-Type, Authorization, x-uploadthing-version, x-uploadthing-package",
@@ -75,7 +78,7 @@ app.use(
 app.use(express.json());
 
 app.get("/health-check", (req: Request, res: Response) => {
-  return res.json({ status: "OK", env: process.env.NODE_ENV });
+  return res.json({ status: "OK", date: new Date() });
 });
 app.get("/", (req: Request, res: Response) => {
   return res.json({ hello: "World" });
