@@ -83,9 +83,9 @@ type Query {
 
 type Mutation {
   createPost(post: CreatePostInput!): Response!
-  createLike(postId: ID!): [Like]!
+  createLike(postId: String!): [Like]!
   createComment(comment: CreateCommentInput!): Response!
-  follows(userId: ID!): Response!
+  follows(userId: String!): Response!
 }
 
 input CreatePostInput {

@@ -9,7 +9,7 @@
     "migration:generate": "drizzle-kit generate:pg",
     "migration:push": "drizzle-kit push:pg",
     "generate": "graphql-codegen",
-    "build": "tsc"
+    "build": "tsc && copyfiles src/schema/schema.graphql dist"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "@lucia-auth/adapter-drizzle": "^1.0.2",
     "@parcel/watcher": "^2.4.1",
     "arctic": "^1.2.1",
+    "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.29.4",
@@ -30,6 +31,7 @@
     "nanoid": "^5.0.6",
     "oslo": "^1.1.3",
     "pg": "^8.11.3",
+    "socket.io": "^4.7.5",
     "uploadthing": "^6.5.2",
     "zod": "^3.22.4"
   },

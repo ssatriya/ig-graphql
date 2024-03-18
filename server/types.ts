@@ -63,7 +63,7 @@ export type Mutation = {
   createComment: Response;
   createLike: Array<Maybe<Like>>;
   createPost: Response;
-  follows: Response;
+  followUser: Response;
 };
 
 
@@ -82,7 +82,7 @@ export type MutationCreatePostArgs = {
 };
 
 
-export type MutationFollowsArgs = {
+export type MutationFollowUserArgs = {
   userId: Scalars['String']['input'];
 };
 
@@ -336,7 +336,7 @@ export type MutationResolvers<ContextType = GraphQLContext, ParentType extends R
   createComment?: Resolver<ResolversTypes['Response'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'comment'>>;
   createLike?: Resolver<Array<Maybe<ResolversTypes['Like']>>, ParentType, ContextType, RequireFields<MutationCreateLikeArgs, 'postId'>>;
   createPost?: Resolver<ResolversTypes['Response'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'post'>>;
-  follows?: Resolver<ResolversTypes['Response'], ParentType, ContextType, RequireFields<MutationFollowsArgs, 'userId'>>;
+  followUser?: Resolver<ResolversTypes['Response'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'userId'>>;
 };
 
 export type PageInfoResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {

@@ -11,7 +11,18 @@ export const resolvers: Resolvers = {
       return users;
     },
     posts: async (_, { page, limit }, { session }) => {
+      const followings = await db.query.followers.findMany({
+        where: (followers, { eq }) =>
+          eq(followers.followingsId, session.user.id),
+      });
+      const followingsArray = followings.map(
+        (user) => user.followersId || session.user.id
+      );
+      const followingsSet = new Set([...followingsArray, session.user.id]);
+
       const posts = await db.query.posts.findMany({
+        where: (posts, { inArray }) =>
+          inArray(posts.userId, Array.from(followingsSet)),
         orderBy: (posts, { desc }) => desc(posts.createdAt),
         offset: (page - 1) * limit,
         limit: limit,
@@ -85,6 +96,14 @@ export const resolvers: Resolvers = {
       });
 
       return like;
+    },
+    following: async (_, __, { session }) => {
+      const followers = await db.query.followers.findMany({
+        where: (followers, { eq }) =>
+          eq(followers.followingsId, session.user.id),
+      });
+
+      return followers;
     },
   },
   Comment: {
@@ -321,7 +340,7 @@ export const resolvers: Resolvers = {
 
       return { message: "Comment created", status: 201 };
     },
-    follows: async (_, { userId }, { session }) => {
+    followUser: async (_, { userId }, { session }) => {
       const isFollowed = await db.query.followers.findFirst({
         where: (followers, { eq, and }) =>
           and(

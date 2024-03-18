@@ -85,7 +85,7 @@ type Mutation {
   createPost(post: CreatePostInput!): Response!
   createLike(postId: String!): [Like]!
   createComment(comment: CreateCommentInput!): Response!
-  follows(userId: String!): Response!
+  followUser(userId: String!): Response!
 }
 
 input CreatePostInput {
