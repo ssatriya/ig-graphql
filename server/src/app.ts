@@ -75,7 +75,7 @@ app.use(
 app.use(express.json());
 
 app.get("/health-check", (req: Request, res: Response) => {
-  return res.json({ status: "OK" });
+  return res.json({ status: "OK", env: process.env.NODE_ENV });
 });
 app.get("/", (req: Request, res: Response) => {
   return res.json({ hello: "World" });
