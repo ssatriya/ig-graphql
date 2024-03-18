@@ -4,7 +4,7 @@ const SocialLogin = () => {
   const onClick = (providers: "google" | "github") => {
     if (providers === "google") {
       window.location.replace(
-        `${import.meta.env.VITE_DEV_SERVER}/api/login/google`
+        `${import.meta.env.VITE_BACKEND_SERVER}/api/login/google`
       );
     } else if (providers === "github") {
       window.location.replace("/api/login/github");

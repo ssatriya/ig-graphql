@@ -31,7 +31,7 @@ import PostModal from "./pages/_components/content/post-modal/post-modal";
 
 const queryClient = new QueryClient();
 const httpLink = createHttpLink({
-  uri: `${import.meta.env.VITE_DEV_SERVER}/graphql`,
+  uri: `${import.meta.env.VITE_BACKEND_SERVER}/graphql`,
 });
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
     const getSession = async () => {
       axios.defaults.withCredentials = true;
       const { data } = await axios(
-        `${import.meta.env.VITE_DEV_SERVER}/api/user/session`,
+        `${import.meta.env.VITE_BACKEND_SERVER}/api/user/session`,
         {
           method: "GET",
           withCredentials: true,

@@ -39,7 +39,7 @@ const SessionProvider = ({ children, session }: SessionProviderProps) => {
 
   const refreshSessionData = async () => {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_DEV_SERVER}/api/user/session`,
+      `${import.meta.env.VITE_BACKEND_SERVER}/api/user/session`,
       {
         withCredentials: true,
       }

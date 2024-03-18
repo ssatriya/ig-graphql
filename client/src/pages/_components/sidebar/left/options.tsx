@@ -38,7 +38,7 @@ const Options = () => {
     setIsLoading(true);
 
     const response = await fetch(
-      `${import.meta.env.VITE_DEV_SERVER}/api/user/logout`,
+      `${import.meta.env.VITE_BACKEND_SERVER}/api/user/logout`,
       {
         method: "POST",
         headers: {
