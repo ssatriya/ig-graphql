@@ -79,7 +79,7 @@ app.use(
 app.use(express.json());
 
 app.get("/health-check", (req: Request, res: Response) => {
-  return res.json({ status: "OK", date: new Date() });
+  return res.json({ status: "OK", date: new Date().toISOString() });
 });
 app.get("/", (req: Request, res: Response) => {
   return res.json({ hello: "World" });
