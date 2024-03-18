@@ -13,7 +13,7 @@ const SocialLogin = () => {
 
   return (
     <>
-      <p>{`${import.meta.env.VITE_BACKEND_SERVER}/api/login/google`}</p>
+      <p>test {`${import.meta.env.VITE_BACKEND_SERVER}/api/login/google`}</p>
       <div className="flex gap-2">
         <Button
           onClick={() => onClick("google")}
