@@ -13,8 +13,8 @@ jobs:
       - name: Install dependencies and build React app
         run: |
           cd client
-          npm install
-          npm build --mode prod
+          npm run install
+          npm run build --mode prod
       - name: Push client files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
