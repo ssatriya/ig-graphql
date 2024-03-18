@@ -1,6 +1,6 @@
 import cors from "cors";
 import http from "http";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 import dotenv from "dotenv";
 import { ApolloServer } from "@apollo/server";
 import { loadSchemaSync } from "@graphql-tools/load";
@@ -26,14 +26,14 @@ const typeDefs = loadSchemaSync("./**/*.graphql", {
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  },
-});
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "POST"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   },
+// });
 
 export interface GraphQLContext {
   req: Request;
