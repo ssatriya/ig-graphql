@@ -5,7 +5,7 @@ const config: CodegenConfig = {
     {
       "http://localhost:4000/graphql": {
         headers: {
-          Authorization: "Bearer gcd1iegdtzb79izbug89n0lqs4wggrm281ay81ap",
+          Authorization: "Bearer 3wis2v09c87wuu24pc504ifwa5ir2ceyj8enzhp8",
         },
       },
     },

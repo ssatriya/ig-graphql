@@ -5,6 +5,7 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import axios from "axios";
+// import io from "socket.io-client";
 import { useEffect, useState } from "react";
 import { setContext } from "@apollo/client/link/context";
 import { Route, Outlet, useLocation } from "react-router-dom";
@@ -16,7 +17,7 @@ import HomePage from "./pages/home-page";
 import LoginPage from "./pages/login-page";
 import { UserSession } from "./types/auth";
 import SavedPage from "./pages/saved-page";
-import SinglePost from "./pages/single-post";
+// import SinglePost from "./pages/single-post";
 import TaggedPage from "./pages/tagged-page";
 import ProfilePage from "./pages/profile-page";
 import ProfileLayout from "./pages/profile-layout";
@@ -90,6 +91,27 @@ function App() {
 
   const isLoggedIn = !!session.user;
 
+  // const socket = io("http://localhost:4000", {
+  //   transportOptions: {
+  //     polling: {
+  //       extraHeaders: {
+  //         Authorization: `Bearer ${session.session?.id}`,
+  //       },
+  //     },
+  //   },
+  // });
+
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     console.log("connected!");
+  //     socket.emit("room", "room1");
+  //   });
+
+  //   socket.on("message", (data) => {
+  //     console.log(data);
+  //   });
+  // }, [socket]);
+
   if (isLoading) {
     return <LoadingScreen />;
   }
@@ -105,7 +127,6 @@ function App() {
             {isLoggedIn && (
               <Route element={<ProtectedLayout />}>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/p/:id" element={<SinglePost />} />
                 <Route path="/:username" element={<ProfileLayout />}>
                   <Route index element={<ProfilePage />} />
                   <Route path="saved" element={<SavedPage />} />

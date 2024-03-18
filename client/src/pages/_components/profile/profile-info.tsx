@@ -1,6 +1,7 @@
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { cn } from "@/lib/utils";
 import { User } from "@/types/auth";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,10 @@ import {
   FollowUserDocument,
   GetUserByUsernameQuery,
 } from "@/lib/graphql/__generated__/graphql";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { client } from "@/components/session-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import FollowingButton from "./following-button";
+import FollowButton from "./follow-button";
 
 type ProfileInfoProps = {
   userByUsername?: GetUserByUsernameQuery;
@@ -20,16 +22,26 @@ type ProfileInfoProps = {
 const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
   const queryClient = useQueryClient();
   const location = useLocation();
-  const myProfile = loggedInUser
-    ? loggedInUser.id === userByUsername?.userByUsername?.id
-    : false;
-  const isFollowing = userByUsername?.userByUsername?.followers?.find(
-    (user) => user?.followingsId === loggedInUser?.id
+  const [isLoading, setIsLoading] = useState(false);
+  const myProfile = useMemo(
+    () =>
+      loggedInUser
+        ? loggedInUser.id === userByUsername?.userByUsername?.id
+        : false,
+    [loggedInUser, userByUsername]
+  );
+  const isFollowing = useMemo(
+    () =>
+      userByUsername?.userByUsername?.followers?.find(
+        (user) => user?.followingsId === loggedInUser?.id
+      ),
+    [userByUsername, loggedInUser]
   );
 
-  const { mutate: followHandler, isPending } = useMutation({
+  const { mutate: followHandler } = useMutation({
     mutationKey: ["followUser", userByUsername?.userByUsername?.id],
     mutationFn: async () => {
+      setIsLoading(true);
       return await client.request(FollowUserDocument, {
         userId: userByUsername?.userByUsername?.id
           ? userByUsername?.userByUsername?.id
@@ -37,6 +49,9 @@ const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
       });
     },
     onSuccess: () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
       queryClient.invalidateQueries({ queryKey: ["userData"] });
     },
   });
@@ -77,28 +92,20 @@ const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
               </Button>
             )}
             {!myProfile && (
-              <Button
-                onClick={() => followHandler()}
-                variant="nav"
-                className={cn(
-                  "px-4 h-8 text-sm rounded-lg",
-                  isFollowing
-                    ? "bg-igElevatedSeparator/50 hover:bg-igElevatedSeparator dark:bg-background-accent dark:hover:bg-background-accent/80"
-                    : "bg-igPrimary hover:bg-igPrimaryHover"
-                )}
-              >
-                {isPending ? (
-                  <img
-                    src="/assets/loading-spinner.svg"
-                    alt="Loading"
-                    className="animate-spin w-[18px] h-[18px]"
+              <>
+                {isFollowing && (
+                  <FollowingButton
+                    followHandler={followHandler}
+                    isLoading={isLoading}
                   />
-                ) : !isPending && isFollowing ? (
-                  "Following"
-                ) : (
-                  "Follow"
                 )}
-              </Button>
+                {!isFollowing && (
+                  <FollowButton
+                    followHandler={followHandler}
+                    isLoading={isLoading}
+                  />
+                )}
+              </>
             )}
             {!myProfile && (
               <Button

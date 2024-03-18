@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/theme-provider";
 import { useCurrentSession } from "@/components/session-provider";
+import { useState } from "react";
 
 const Options = () => {
   const {
@@ -24,6 +25,7 @@ const Options = () => {
     { toggle: toggleDarkModeOpen, set: setToggleDarkModeOpen },
   ] = useToggle();
   const [checkedDarkMode, { toggle: toggleCheckedDarkMode }] = useToggle();
+  const [isLoading, setIsLoading] = useState(false);
 
   const dark = theme === "dark";
   const light = theme === "light";
@@ -32,6 +34,8 @@ const Options = () => {
     if (!session?.id) {
       return null;
     }
+
+    setIsLoading(true);
 
     const response = await fetch(
       `${import.meta.env.VITE_DEV_SERVER}/api/user/logout`,
@@ -45,6 +49,9 @@ const Options = () => {
 
     if (response.ok) {
       window.location.href = import.meta.env.VITE_URL;
+    }
+    if (!response.ok) {
+      setIsLoading(false);
     }
   };
 
@@ -197,6 +204,7 @@ const Options = () => {
               className="bg-hoverOptions h-[2px] -ml-2 w-[266px] my-2"
             />
             <Button
+              disabled={isLoading}
               onClick={onLogout}
               variant="nav"
               className="p-4 flex items-center justify-start h-[50px] w-[250px] rounded-lg hover:bg-hoverOptions"

@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import useContentLoading from "@/hooks/use-content-loading";
 import PostImageSkeleton from "./_components/profile/post-image-skeleton";
 import GeneralProfilePosts from "./_components/profile/general-profile/general-profile-posts";
-import PersonalProfilePosts from "./_components/profile/persona-profile/personal-profile-posts";
+import PersonalProfilePosts from "./_components/profile/personal-profile/personal-profile-posts";
 
 export default function ProfilePage() {
   const {

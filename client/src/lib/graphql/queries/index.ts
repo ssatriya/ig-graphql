@@ -122,9 +122,19 @@ export const GET_POSTS_BY_USER_ID = gql(/* GraphQL */ `
 
 export const FOLLOW_USER = gql(/* GraphQL */ `
   mutation FollowUser($userId: String!) {
-    follows(userId: $userId) {
-      status
+    followUser(userId: $userId) {
       message
+      status
+    }
+  }
+`);
+
+export const GET_FOLLOWING = gql(/* GraphQL */ `
+  query GetFollowing {
+    following {
+      id
+      followingsId
+      followersId
     }
   }
 `);
