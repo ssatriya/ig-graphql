@@ -338,7 +338,7 @@ export const resolvers: Resolvers = {
         userId: session.user.id,
       });
 
-      return { message: "Comment created", status: 201 };
+      return { message: "Comment created.", status: 201 };
     },
     followUser: async (_, { userId }, { session }) => {
       const isFollowed = await db.query.followers.findFirst({

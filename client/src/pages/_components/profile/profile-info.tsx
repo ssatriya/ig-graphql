@@ -61,7 +61,7 @@ const ProfileInfo = ({ userByUsername, loggedInUser }: ProfileInfoProps) => {
       <div className="w-[316px] flex justify-center">
         <Avatar className="h-[150px] w-[150px] border-[3px] border-transparent flex items-center justify-center mr-[30px]">
           <AvatarImage src={userByUsername?.userByUsername?.image || ""} />
-          <AvatarFallback>ss</AvatarFallback>
+          <AvatarFallback>sss</AvatarFallback>
         </Avatar>
       </div>
       <div className="flex flex-col gap-5">

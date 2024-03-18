@@ -4,7 +4,7 @@ on:
       - main
     paths:
       - "client/**"
-name: Deploy website on push
+name: Deploy client on push
 jobs:
   web-deploy:
     name: Deploy
