@@ -63,7 +63,6 @@ export type Mutation = {
   createLike: Array<Maybe<Like>>;
   createPost: Response;
   followUser: Response;
-  follows: Response;
 };
 
 
@@ -83,11 +82,6 @@ export type MutationCreatePostArgs = {
 
 
 export type MutationFollowUserArgs = {
-  userId: Scalars['String']['input'];
-};
-
-
-export type MutationFollowsArgs = {
   userId: Scalars['String']['input'];
 };
 
