@@ -54,7 +54,7 @@ await server.start();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_PUBLIC_URL,
     methods: "GET, POST, PATCH, DELETE, PUT",
     allowedHeaders:
       "Content-Type, Authorization, x-uploadthing-version, x-uploadthing-package",
