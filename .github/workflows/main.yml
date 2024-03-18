@@ -14,7 +14,7 @@ jobs:
         run: |
           cd client
           npm install
-          npm build
+          npm run build -- --mode prod
       - name: Push client files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
