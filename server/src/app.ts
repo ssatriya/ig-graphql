@@ -48,6 +48,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  introspection: process.env.NODE_ENV !== "production",
 });
 
 await server.start();
