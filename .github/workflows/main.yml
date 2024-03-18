@@ -7,6 +7,9 @@ jobs:
   web-deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    env:
+      VITE_BACKEND_SERVER: ${{ secrets.VITE_BACKEND_SERVER }}
+      VITE_URL: ${{ secrets.VITE_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
